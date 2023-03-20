@@ -1,0 +1,29 @@
+const app = require("express")();
+const ytdl = require("ytdl-core");
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+app.get("/", (req, res) => {
+  res.render("index", { video: "" });
+});
+app.post("/show_availables", async (req, res) => {
+  const fileName = await ytdl.getInfo(req.body.url).then((filename) => {
+    return filename.videoDetails.title;
+  });
+  res.setHeader("Content-Type", "video/mp4");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="${encodeURIComponent(fileName)}.mp4"`
+  );
+  const stream = ytdl(req.body.url, {
+    filter: (format) => {
+      return (
+        format.codecs.includes("avc1.42001E") &&
+        format.codecs.includes("mp4a.40.2")
+      );
+    },
+  });
+  stream.pipe(res);
+});
+
+app.listen(3000);
