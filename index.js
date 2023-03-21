@@ -30,9 +30,22 @@ app.post("/filter", async (req, res) => {
 });
 
 app.post("/download", async (req, res) => {
-  if (req.body.url == "") {
-    res.send("You didn't entered anything...");
-  } else {
+  if (req.body.fformat == "audioonly") {
+    const fileName = await ytdl.getInfo(req.body.url).then((filename) => {
+      return filename.videoDetails.title;
+    });
+    res.setHeader("Content-Type", "audio/mp3");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="jvxle.onrender.com - ${encodeURIComponent(
+        fileName
+      )}.mp3"`
+    );
+    const stream = ytdl(req.body.url, {
+      filter: "audioonly",
+    });
+    stream.pipe(res);
+  } else if (req.body.fformat == "videoonly") {
     const fileName = await ytdl.getInfo(req.body.url).then((filename) => {
       return filename.videoDetails.title;
     });
@@ -44,6 +57,7 @@ app.post("/download", async (req, res) => {
       )}.mp4"`
     );
     const stream = ytdl(req.body.url, {
+      filter: "videoonly",
       filter: (format) => {
         return (
           format.codecs.includes("avc1.42001E") &&
@@ -52,6 +66,8 @@ app.post("/download", async (req, res) => {
       },
     });
     stream.pipe(res);
+  } else {
+    null;
   }
 });
 

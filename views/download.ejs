@@ -24,6 +24,13 @@
         justify-content: center;
         align-items: center;
       }
+      .card-body {
+        display: flex;
+        flex-direction: column;
+      }
+      select {
+        margin-top: 20px;
+      }
     </style>
   </head>
   <body>
@@ -37,6 +44,10 @@
         />
         <div class="card-body">
           <h5 class="card-title"><%= title %></h5>
+          <select name="fformat">
+            <option value="videoonly">Video</option>
+            <option value="audioonly">Audio</option>
+          </select>
           <input
             type="submit"
             class="btn btn-primary"
