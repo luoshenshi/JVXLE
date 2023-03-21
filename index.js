@@ -13,7 +13,7 @@ app.post("/show_availables", async (req, res) => {
   res.setHeader("Content-Type", "video/mp4");
   res.setHeader(
     "Content-Disposition",
-    `attachment; filename="${encodeURIComponent(fileName)}.mp4"`
+    `attachment; filename="jvxle.vercel.app - ${encodeURIComponent(fileName)}.mp4"`
   );
   const stream = ytdl(req.body.url, {
     filter: (format) => {
