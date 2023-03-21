@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JVXLE downloader</title>
+    <title>Document</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,32 +15,35 @@
       body {
         width: 100%;
         height: 100vh;
+        overflow: hidden;
+      }
+      .container {
+        width: 100%;
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      input[type="submit"] {
-        margin-top: 20px;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <form class="mb-3" method="post" action="/filter">
-        <input
-          type="text"
-          class="form-control"
-          name="url"
-          id="exampleFormControlInput1"
-          placeholder="YouTube Video URL"
+      <form action="/download" method="post" class="card" style="width: 18rem">
+        <input type="text" name="url" hidden value="<%= url %>" />
+        <img
+          src="<%= thumbnail %>"
+          class="card-img-top"
+          alt="video_thumbnail"
         />
-        <input type="submit" class="btn btn-primary" value="Go" />
+        <div class="card-body">
+          <h5 class="card-title"><%= title %></h5>
+          <input
+            type="submit"
+            class="btn btn-primary"
+            style="margin-top: 20px"
+            value="Download"
+          />
+        </div>
       </form>
     </div>
     <script
