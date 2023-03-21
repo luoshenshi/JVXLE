@@ -12,25 +12,29 @@ app.get("/", (req, res) => {
 });
 
 app.post("/show_availables", async (req, res) => {
-  const fileName = await ytdl.getInfo(req.body.url).then((filename) => {
-    return filename.videoDetails.title;
-  });
-  res.setHeader("Content-Type", "video/mp4");
-  res.setHeader(
-    "Content-Disposition",
-    `attachment; filename="jvxle.vercel.app - ${encodeURIComponent(
-      fileName
-    )}.mp4"`
-  );
-  const stream = ytdl(req.body.url, {
-    filter: (format) => {
-      return (
-        format.codecs.includes("avc1.42001E") &&
-        format.codecs.includes("mp4a.40.2")
-      );
-    },
-  });
-  stream.pipe(res);
+  if (req.body.url == "") {
+    res.send("You didn't entered anything...");
+  } else {
+    const fileName = await ytdl.getInfo(req.body.url).then((filename) => {
+      return filename.videoDetails.title;
+    });
+    res.setHeader("Content-Type", "video/mp4");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="jvxle.vercel.app - ${encodeURIComponent(
+        fileName
+      )}.mp4"`
+    );
+    const stream = ytdl(req.body.url, {
+      filter: (format) => {
+        return (
+          format.codecs.includes("avc1.42001E") &&
+          format.codecs.includes("mp4a.40.2")
+        );
+      },
+    });
+    stream.pipe(res);
+  }
 });
 
 app.listen(3000);
